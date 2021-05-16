@@ -1,0 +1,48 @@
+SQL Query Assignment - 2
+
+1. Find out the number of documentaries with deleted scenes.
+
+select count(*) as numOfDocumentaries 
+from category c join film_category fc on c.category_id = fc.category_id 
+join film f on fc.film_id = f.film_id
+where name='Documentary' and special_features like '%Deleted Scenes%';
+
+2. Find out the number of sci-fi movies rented by the store managed by Jon Stephens.
+
+select count(*) as numOfSciFi 
+from rental r join staff s on r.staff_id= s.staff_id 
+join inventory inv on r.inventory_id = inv.inventory_id 
+join film f on inv.film_id = f.film_id  
+join film_category fc on f.film_id = fc.film_id 
+join category c on fc.category_id = c.category_id 
+where first_name='Jon' and last_name='Stephens' and name='Sci-Fi';
+
+3. Find out the total sales from Animation movies.
+
+select sum(amount) as sales 
+from rental r join payment p on r.rental_id = p.rental_id 
+join inventory inv on r.inventory_id = inv.inventory_id 
+join film f on inv.film_id = f.film_id  
+join film_category fc on f.film_id = fc.film_id 
+join category c on fc.category_id = c.category_id
+where name='Animation';
+
+4. Find out the top 3 rented category of movies by “PATRICIA JOHNSON”.
+
+select name 
+from rental r join inventory inv on r.inventory_id = inv.inventory_id 
+join film f on inv.film_id = f.film_id 
+join film_category fc on f.film_id = fc.film_id 
+join category c on fc.category_id = c.category_id 
+join customer cust on r.customer_id=cust.customer_id
+where first_name='PATRICIA' and last_name='JOHNSON' group by name order by count(*) limit 3;
+
+5. Find out the number of R rated movies rented by “SUSAN WILSON”.
+
+select count(*) numOfMovies 
+from rental r join inventory inv on r.inventory_id = inv.inventory_id 
+join film f on inv.film_id = f.film_id 
+join film_category fc on f.film_id = fc.film_id 
+join customer cust on r.customer_id=cust.customer_id
+where first_name='SUSAN' and last_name='WILSON' and rating='R';
+
